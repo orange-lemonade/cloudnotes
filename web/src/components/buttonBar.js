@@ -18,7 +18,14 @@ const CircleButton = styled(Button)`
 `;
 
 const ButtonBar = (props) => {
-    const { noteId, onSave, onDelete, isDeleted } = props;
+    const { 
+        noteId, 
+        onSave, 
+        onDelete, 
+        isDeleted, 
+        onRestore, 
+        onPermanentDelete 
+    } = props;
 
     const showSave = noteId < 0 || !isDeleted;
     const showShare = noteId > 0 && !isDeleted;
@@ -75,7 +82,7 @@ const ButtonBar = (props) => {
                         type="primary" 
                         shape="circle" 
                         icon={<UndoOutlined />}
-                        onClick={() => alert('restoring')}
+                        onClick={() => onRestore(noteId)}
                     />
                 </Tooltip>
             }
@@ -87,7 +94,7 @@ const ButtonBar = (props) => {
                         okText="Yes"
                         cancelText="No"
                         placement="left"
-                        onConfirm={() => alert('deleting' + noteId)}
+                        onConfirm={() => onPermanentDelete(noteId)}
                     >                            
                         <CircleButton 
                             type="primary" 

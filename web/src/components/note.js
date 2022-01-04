@@ -43,7 +43,7 @@ const Tags = styled.div`
 
 const Note = (props) => {
     console.log(props);
-    const { noteId, onSave, onDelete } = props;
+    const { noteId, onSave, onDelete, onRestore, onPermanentDelete } = props;
 
     let reactQuillRef = null
 
@@ -55,7 +55,6 @@ const Note = (props) => {
 
     useEffect(() => {
         const getNoteById = async () => {
-        console.log('getNoteById')
             try {
                 const token = await getAccessTokenSilently();
                 const response = await fetch(`https://api.cloudnotes.link/note?id=${noteId}`, {
@@ -65,7 +64,6 @@ const Note = (props) => {
                         "Authorization": `Bearer ${token}`
                     }
                 });
-               // debugger;
                 const responseData = await response.json();
                 console.log(responseData);
                 setTitle(responseData.title);
@@ -127,6 +125,8 @@ const Note = (props) => {
                 }}
                 onDelete={onDelete}
                 isDeleted={isDeleted === 1}
+                onRestore={onRestore}
+                onPermanentDelete={onPermanentDelete}
             />
            
         </NoteContainer>

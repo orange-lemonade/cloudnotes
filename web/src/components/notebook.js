@@ -27,10 +27,16 @@ const MenuDivider = styled(Divider)`
     margin: 10px 0;
 `;
 
-const Notebook = () => {
+const SILENT_ERROR = Symbol("silent");
+const DISPLAY_ERROR = Symbol("display");
+const showError = (errorType, errorMessage) => {
+    if (errorType === DISPLAY_ERROR)
+        message.error('There was an error processing your request');
+    console.log(errorMessage);
+};
 
-    const { getAccessTokenSilently } = useAuth0();
-    
+const Notebook = () => {
+    const { getAccessTokenSilently } = useAuth0();  
     const [state, setState] = useState({
         tags: [],
         notes: []
@@ -52,10 +58,13 @@ const Notebook = () => {
             });
 
             const responseData = await response.json();
-            message.success('Your note has been created');
-            getAllNotes("all", responseData.id.toString());
+            if (response.status === 200) {
+                message.success('Your note has been created');
+                getAllNotes("all", responseData.id.toString());
+            }
+            else showError(response.statusText, DISPLAY_ERROR);
         } catch (error) {
-            console.log(error);
+            showError(error, DISPLAY_ERROR);
         }
     };
 
@@ -75,20 +84,60 @@ const Notebook = () => {
                 }
             });
 
-            const responseData = await response.json();
-
-            message.success('Your changes have been saved');
-            //if (responseData) show success message
+            if (response.status === 200)
+                message.success('Your changes have been saved');
+            else showError(response.statusText, DISPLAY_ERROR);
         } catch (error) {
-            console.log(error);
+            showError(error, DISPLAY_ERROR);
         }
     };
 
 
-    const onSave = async (id, title, text) => {
-       // debugger;
+    const onPermanentDelete = async (noteId) => {
+        try {  
+            const token = await getAccessTokenSilently();        
+            const response = await fetch(`https://api.cloudnotes.link/bin?id=${noteId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": 'application/json',
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 200) {
+                message.success('Your note has been deleted permanently');
+                getAllNotes("all");
+            }
+            else showError(response.statusText, DISPLAY_ERROR);
+        } catch (error) {
+            showError(error, DISPLAY_ERROR);
+        }
+    }
+
+    const onRestore = async (noteId) => {
+        try {  
+            const token = await getAccessTokenSilently();        
+            const response = await fetch(`https://api.cloudnotes.link/bin?id=${noteId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": 'application/json',
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 200) {
+                message.success('Your note has been restored');
+                getAllNotes("all", noteId.toString());
+            }
+            else showError(response.statusText, DISPLAY_ERROR);
+        } catch (error) {
+            showError(error, DISPLAY_ERROR);
+        }
+    }
+
+    const onSave = async (id, title, text) => 
         id <= 0 ? saveNewNote(title, text) : editNote(id, title, text);             
-    };
+
 
     const onDelete = async(id) => {
         try {
@@ -100,10 +149,11 @@ const Notebook = () => {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            console.log(response);
-            message.info('Your note has been deleted');
+            if (response.status === 200)
+                message.info('Your note has been deleted');
+            else showError(response.statusText, DISPLAY_ERROR);
         } catch (error) {
-            console.log(error);
+            console.log(error, DISPLAY_ERROR);
         }
     };
 
@@ -119,16 +169,19 @@ const Notebook = () => {
                 }
             });
 
-            const responseData = await response.json();
-            console.log(responseData);
-            setState({
-                ...state,
-                notes: responseData,
-                selectedTag: tagId,
-                selectedNote: -1
-            });
+            if (response.status === 200) {
+                const responseData = await response.json();
+                
+                setState({
+                    ...state,
+                    notes: responseData,
+                    selectedTag: tagId,
+                    selectedNote: -1
+                });
+            }
+            else showError(response.statusText, SILENT_ERROR);
         } catch (error) {
-            console.log(error);
+            showError(error, SILENT_ERROR);
         }
     };
 
@@ -144,24 +197,25 @@ const Notebook = () => {
                 }
             });
 
-            const responseData = await response.json();
+            if (response.status === 200) {
+                const responseData = await response.json();
 
-            setState({
-                ...state,
-                notes: responseData,
-                selectedTag: tagId,
-                selectedNote: -1
-            });
+                setState({
+                    ...state,
+                    notes: responseData,
+                    selectedTag: tagId,
+                    selectedNote: -1
+                });
+            }
+            else showError(response.statusText, SILENT_ERROR);
         } catch (error) {
-            console.log(error);
+            showError(error, SILENT_ERROR);
         }
     };
 
     const getAllNotes = async (tagId, preselectedNote) => {
         try {
-            //debugger
-            const token = await getAccessTokenSilently();
-            
+            const token = await getAccessTokenSilently();            
             const response = await fetch(`https://api.cloudnotes.link/notes`, {
                 method: "GET",
                 headers: {
@@ -170,17 +224,19 @@ const Notebook = () => {
                 }
             });
 
-            const responseData = await response.json();
-            console.log(responseData);
+            if (response.status === 200) {
+                const responseData = await response.json();
 
-            setState({
-                ...state,
-                notes: responseData,
-                selectedTag: tagId,
-                selectedNote: preselectedNote || -1
-            });
+                setState({
+                    ...state,
+                    notes: responseData,
+                    selectedTag: tagId,
+                    selectedNote: preselectedNote || -1
+                });
+            }
+            else showError(response.statusText, SILENT_ERROR);
         } catch (error) {
-            console.log(error);
+            showError(error, SILENT_ERROR);
         }
     };
 
@@ -206,14 +262,14 @@ const Notebook = () => {
             default:
                 getNotesByTag(tag);
         }
-    }
+    };
 
     const handleNoteClick = (e) => {
         setState({
             ...state,
             selectedNote: e.key,
         });
-    }
+    };
 
     useEffect(() => {
         const getTags = async () => {
@@ -227,15 +283,17 @@ const Notebook = () => {
                         "Authorization": `Bearer ${token}`
                     }
                 });
+                if (response.status === 200) {
+                    const responseData = await response.json();
 
-                const responseData = await response.json();
-
-                setState({
-                    ...state,
-                    tags: responseData
-                });
+                    setState({
+                        ...state,
+                        tags: responseData
+                    });
+                }
+                else showError(response.statusText, SILENT_ERROR);
             } catch (error) {
-                console.log(error);
+                showError(error, SILENT_ERROR);
             }
         };
         getTags();
@@ -284,7 +342,7 @@ const Notebook = () => {
             </Menu>
             </Sider>
             {
-                state.selectedNote !== 0 && 
+                state.selectedNote !== 0 && state.selectedTag && 
                     <Sider style={{"border-left": "1px solid rgba(255, 255, 255, 0.65)" }}>
                         {
                             state.notes.length === 0 ? 
@@ -300,11 +358,9 @@ const Notebook = () => {
                                     selectedKeys={[state.selectedNote]}
                                 >
                                     {
-                                        state.notes.map((item) => {
-                                            return <Menu.Item key={item.id}>
-                                                        {item.title}
-                                                    </Menu.Item>;
-                                        })
+                                        state.notes.map((item) => 
+                                            <Menu.Item key={item.id}>{item.title}</Menu.Item>
+                                        )
                                     }
                                 </Menu>   
                         }
@@ -317,6 +373,8 @@ const Notebook = () => {
                             noteId={parseInt(state.selectedNote) || -1}
                             onSave={onSave}
                             onDelete={onDelete}
+                            onRestore={onRestore}
+                            onPermanentDelete={onPermanentDelete}
                         />
                 }
             </Content>
