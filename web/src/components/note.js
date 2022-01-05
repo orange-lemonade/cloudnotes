@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import ReactQuill from 'react-quill';
-import { 
-    Tag, 
-    Input, 
-} from 'antd';
+import { Input } from 'antd';
 import { useAuth0 } from '@auth0/auth0-react';
-import { 
-    PlusOutlined, 
-    EditOutlined
-} from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import 'react-quill/dist/quill.snow.css';
 import ButtonBar from "./buttonBar";
+import Tags from './tags';
 
 const NoteContainer = styled.div`
     display: flex;
@@ -30,20 +25,15 @@ const Editor = styled.div`
     }
 `;
 
-const Tags = styled.div`
-    flex: 0 0 auto;
-    margin: 0.5em;
-    justify-content: flex-end;
-
-    .add-tag {
-        background: #fff;
-        border-style: dashed;
-    }
-`;
-
 const Note = (props) => {
-    console.log(props);
-    const { noteId, onSave, onDelete, onRestore, onPermanentDelete } = props;
+    const { 
+        noteId, 
+        onSave, 
+        onDelete, 
+        onRestore, 
+        onPermanentDelete, 
+        onTagCreate 
+    } = props;
 
     let reactQuillRef = null
 
@@ -65,7 +55,6 @@ const Note = (props) => {
                     }
                 });
                 const responseData = await response.json();
-                console.log(responseData);
                 setTitle(responseData.title);
                 setNoteText(responseData.note_text);
                 setIsDeleted(responseData.deleted);
@@ -80,7 +69,8 @@ const Note = (props) => {
             setTitle("New note");
             setNoteText("");
         }
-    }, [props.noteId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [noteId]);
 
     return (
         <NoteContainer>
@@ -99,13 +89,11 @@ const Note = (props) => {
                 />
 
                 {
-                    noteId > 0 && 
-                        <Tags>
-                            <Tag closable={true}>hi</Tag>
-                            <Tag className="add-tag" onClick={() => {}}>
-                                <PlusOutlined /> Add Tag
-                            </Tag>
-                        </Tags>
+                    noteId > 0 && !isDeleted &&
+                        <Tags 
+                            noteId={noteId}
+                            onTagCreate={onTagCreate}
+                        />
                 }
 
                 <ReactQuill 
@@ -119,12 +107,9 @@ const Note = (props) => {
             
             <ButtonBar
                 noteId={noteId}
-                onSave={() => {
-                    const editorContent = reactQuillRef.getEditorContents();
-                    onSave(noteId, title, editorContent);
-                }}
-                onDelete={onDelete}
                 isDeleted={isDeleted === 1}
+                onSave={() => onSave(noteId, title, reactQuillRef.getEditorContents())}
+                onDelete={onDelete}
                 onRestore={onRestore}
                 onPermanentDelete={onPermanentDelete}
             />

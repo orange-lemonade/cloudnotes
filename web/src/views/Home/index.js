@@ -24,8 +24,11 @@ const NavBar = styled.div`
 `;
 
 function Home() {
-    const { isAuthenticated, loginWithRedirect,
-        logout } = useAuth0();
+    const { 
+        isAuthenticated, 
+        loginWithRedirect,
+        logout 
+    } = useAuth0();
 
     return (
         <AppLayout>
@@ -34,16 +37,16 @@ function Home() {
                     <Logo ></Logo>
                     {
                         isAuthenticated &&
-                            <Tooltip title="Log Out">
-                                <Button
-                                    shape="circle"
-                                    icon={<LogoutOutlined />}
-                                    type="primary" 
-                                    onClick={() =>
-                                        logout({ returnTo: window.location.origin })
-                                    } 
-                                    danger />
-                            </Tooltip>
+                        <Tooltip title="Log Out">
+                            <Button
+                                shape="circle"
+                                icon={<LogoutOutlined />}
+                                type="primary"
+                                onClick={() =>
+                                    logout({ returnTo: window.location.origin })
+                                }
+                                danger />
+                        </Tooltip>
                     }
                 </NavBar>
 

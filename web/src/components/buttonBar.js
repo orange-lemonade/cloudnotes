@@ -52,7 +52,7 @@ const ButtonBar = (props) => {
                         type="primary" 
                         shape="circle" 
                         icon={<ShareAltOutlined />}
-                        onClick={() => alert('sharin')}
+                        onClick={() => alert('sharing')}
                     />
                 </Tooltip>
             }

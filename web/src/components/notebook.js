@@ -32,7 +32,7 @@ const DISPLAY_ERROR = Symbol("display");
 const showError = (errorType, errorMessage) => {
     if (errorType === DISPLAY_ERROR)
         message.error('There was an error processing your request');
-    console.log(errorMessage);
+    console.error(errorMessage);
 };
 
 const Notebook = () => {
@@ -41,6 +41,13 @@ const Notebook = () => {
         tags: [],
         notes: []
     });
+
+    const onTagCreate = async(tag) => {
+        setState({
+            ...state,
+            tags: [...state.tags, tag]
+        });
+    };
 
     const saveNewNote = async (title, text) => {
         try {  
@@ -153,7 +160,7 @@ const Notebook = () => {
                 message.info('Your note has been deleted');
             else showError(response.statusText, DISPLAY_ERROR);
         } catch (error) {
-            console.log(error, DISPLAY_ERROR);
+            showError(error, DISPLAY_ERROR);
         }
     };
 
@@ -296,7 +303,8 @@ const Notebook = () => {
                 showError(error, SILENT_ERROR);
             }
         };
-        getTags();
+        getTags();    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -375,6 +383,7 @@ const Notebook = () => {
                             onDelete={onDelete}
                             onRestore={onRestore}
                             onPermanentDelete={onPermanentDelete}
+                            onTagCreate={onTagCreate}
                         />
                 }
             </Content>
