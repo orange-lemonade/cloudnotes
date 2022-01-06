@@ -4,7 +4,7 @@ import {
     Divider, 
     Menu, 
     Empty,
-    message 
+    message
 } from 'antd';
 import { 
     TagOutlined, 
@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
+import { isUndefined } from "lodash";
 import Note from './note';
 
 const { Sider, Content } = Layout;
@@ -39,7 +40,8 @@ const Notebook = () => {
     const { getAccessTokenSilently } = useAuth0();  
     const [state, setState] = useState({
         tags: [],
-        notes: []
+        notes: [],
+        fetchedTags: false
     });
 
     const onTagCreate = async(tag) => {
@@ -156,8 +158,10 @@ const Notebook = () => {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            if (response.status === 200)
+            if (response.status === 200) {
                 message.info('Your note has been deleted');
+                getAllNotes("all");
+            }
             else showError(response.statusText, DISPLAY_ERROR);
         } catch (error) {
             showError(error, DISPLAY_ERROR);
@@ -279,6 +283,13 @@ const Notebook = () => {
     };
 
     useEffect(() => {
+        if (state.fetchedTags && isUndefined(state.selectedTag)) {
+            getAllNotes("all");
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.fetchedTags]);
+
+    useEffect(() => {
         const getTags = async () => {
             try {
                 const token = await getAccessTokenSilently();
@@ -295,7 +306,8 @@ const Notebook = () => {
 
                     setState({
                         ...state,
-                        tags: responseData
+                        tags: responseData,
+                        fetchedTags: true
                     });
                 }
                 else showError(response.statusText, SILENT_ERROR);
@@ -351,7 +363,7 @@ const Notebook = () => {
             </Sider>
             {
                 state.selectedNote !== 0 && state.selectedTag && 
-                    <Sider style={{"border-left": "1px solid rgba(255, 255, 255, 0.65)" }}>
+                    <Sider>
                         {
                             state.notes.length === 0 ? 
                                 <NoData 

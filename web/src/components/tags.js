@@ -139,12 +139,7 @@ const Tags = (props) => {
                 onDeselect={value => untagNote(value)}
             >
                 {
-                    allTags.map(tag => {
-                        return <Option 
-                                    key={tag.id}>
-                                        {tag.tag_text}
-                                </Option>
-                    })
+                    allTags.map(tag => <Option key={tag.id}>{tag.tag_text}</Option>)
                 }
             </Select>
         </TagsWrapper>
