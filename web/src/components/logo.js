@@ -11,11 +11,12 @@ const Wrapper = styled.div`
 
     .logo-img {
         height: 1.5em;
+        filter: brightness(5);
     }
 `;
 
 const Title = styled(Text)`
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255);
     margin-left: 0.25em;
     font-size: 1.5em;
 `;
