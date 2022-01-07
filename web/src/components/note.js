@@ -44,6 +44,7 @@ const Editor = styled.div`
   flex-flow: wrap;
   padding: 0.5em;
   width: 60vw;
+  height: 70vh;
   .note-editor {
     margin-top: 5px;
     border-radius: 10px;
