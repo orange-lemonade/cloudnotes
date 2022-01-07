@@ -28,6 +28,10 @@ const MenuDivider = styled(Divider)`
     margin: 10px 0;
 `;
 
+const ScrollableSider = styled(Sider)`
+    overflow: auto;
+`;
+
 const SILENT_ERROR = Symbol("silent");
 const DISPLAY_ERROR = Symbol("display");
 const showError = (errorType, errorMessage) => {
@@ -44,7 +48,7 @@ const Notebook = () => {
         fetchedTags: false
     });
 
-    const onTagCreate = async(tag) => {
+    const onTagCreate = async (tag) => {
         setState({
             ...state,
             tags: [...state.tags, tag]
@@ -322,7 +326,7 @@ const Notebook = () => {
 
     return (
         <>
-            <Sider>
+            <ScrollableSider>
             <Menu
                 onClick={handleTagClick}
                 mode="inline"
@@ -360,10 +364,10 @@ const Notebook = () => {
                     })
                 }
             </Menu>
-            </Sider>
+            </ScrollableSider>
             {
                 state.selectedNote !== 0 && state.selectedTag && 
-                    <Sider>
+                    <ScrollableSider>
                         {
                             state.notes.length === 0 ? 
                                 <NoData 
@@ -384,7 +388,7 @@ const Notebook = () => {
                                     }
                                 </Menu>   
                         }
-                    </Sider>
+                    </ScrollableSider>
             }
             <Content>
                 { 

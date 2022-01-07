@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { 
     Button, 
@@ -11,6 +11,7 @@ import {
     ShareAltOutlined,
     UndoOutlined
 } from '@ant-design/icons';
+import ShareModal from './shareModal';
 
 const CircleButton = styled(Button)`
     display: block;
@@ -33,6 +34,8 @@ const ButtonBar = (props) => {
     const showRestore = isDeleted;
     const showDeletePermanent = isDeleted;
 
+    const [showShareModal, setShowShareModal] = useState(false);
+
     return (
         <div>
             {
@@ -52,9 +55,16 @@ const ButtonBar = (props) => {
                         type="primary" 
                         shape="circle" 
                         icon={<ShareAltOutlined />}
-                        onClick={() => alert('sharing')}
+                        onClick={() => setShowShareModal(true)}
                     />
                 </Tooltip>
+            }
+            {   showShare && 
+                    <ShareModal 
+                        noteId={noteId}
+                        visible={showShareModal} 
+                        onClose={() => setShowShareModal(false)}
+                    /> 
             }
             {
                 showDelete &&

@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import 'antd/dist/antd.css';
 
 const MainContainer = styled.main`
-  position: absolute;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    font-family: Geneva, Verdana, sans-serif;
 `;
 
 function App() {
