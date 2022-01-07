@@ -27,4 +27,4 @@ The frontend will be built using the Javascript framework, ReactJS. For the appl
 
 We made a few changes to the MySQL database schema due to Auth0 handling all of the user authentication and providing each user with it's own unique `sub` id that is authorized and validated every time an endpoint is called. Instead of having an individual user table we use this `sub` id as the main `user_id` variable in the `Note` and `Tag` tables. We also make use of the PyMySql python library to help handle executing SQL queries.
 
-Other than those changes the application works well and meets the goals we set in the beginning of this coursework project. Login and test it out [here](https://www.cloudnote.links/).
+Other than those changes the application works well and meets the goals we set in the beginning of this coursework project. Login and test it out [here](https://www.cloudnotes.link/).
