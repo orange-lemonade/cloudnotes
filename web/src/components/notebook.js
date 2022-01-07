@@ -24,7 +24,8 @@ const MenuDivider = styled(Divider)`
 
 const StyledSider = styled(Sider)`
   border-top-left-radius: ${(props) => (props.secondary ? "10px" : "0")};
-
+  /* height: 100%; */
+  overflow-y: auto;
   background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
