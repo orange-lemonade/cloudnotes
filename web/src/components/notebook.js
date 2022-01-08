@@ -135,7 +135,6 @@ const Notebook = () => {
 
       if (response.status === 200) {
         message.success("Your changes have been saved");
-        getAllNotes("all", id);
       } else showError(response.statusText, DISPLAY_ERROR);
     } catch (error) {
       showError(error, DISPLAY_ERROR);

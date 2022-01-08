@@ -11,6 +11,7 @@ const NoteContainer = styled.div`
 
     .note-title {
         margin: auto;
+        margin-bottom: 1em;
     }
 `;
 
