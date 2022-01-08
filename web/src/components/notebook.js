@@ -7,7 +7,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isUndefined } from "lodash";
 import Note from './note';
 import { showError, SILENT_ERROR, DISPLAY_ERROR } from '../utilities/error';
@@ -27,20 +27,20 @@ const StyledSider = styled(Sider)`
   border-top-left-radius: ${(props) => (props.secondary ? "10px" : "0")};
   /* height: 100%; */
   overflow-y: auto;
-  background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
-    background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+    background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
     border-radius: 10px;
-    color: white;
+    color: #b0b0b0;
   }
 
   .ant-menu-dark.ant-menu-inline .ant-menu-item,
   .ant-menu-dark.ant-menu-inline .ant-menu-submenu-title {
-    background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+    background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
     margin-top: 0.5rem;
-    color: white;
+    color: #b0b0b0;
     padding-top: 4px;
     padding-bottom: 4px;
 
@@ -51,7 +51,7 @@ const StyledSider = styled(Sider)`
 `;
 
 const StyledMenu = styled(Menu)`
-  background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
   .ant-layout-sider-children {
     background-color: red;
   }
@@ -62,11 +62,25 @@ const StyledContent = styled(Content)`
   border-top-left-radius: ${(props) =>
     props.selectedNote === 0 ? "10px" : "0"};
 
-  background-color: ${(props) => (props.secondary ? "#0F044C" : "#f0f2f5")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#f0f2f5")};
 `;
 
 const StyledMenuItem = styled(Menu.Item)`
   background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+
+  svg {
+    color: #45a0b7;
+  }
+
+  ${(props) => {
+      if (props.secondary) {
+        return css`        
+            .ant-menu-title-content {
+                color: #f8b536;
+            }
+        `
+      }
+  }}
 `;
 
 const Notebook = () => {
@@ -334,7 +348,7 @@ const Notebook = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
+          }
         });
         if (response.status === 200) {
           const responseData = await response.json();

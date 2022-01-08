@@ -15,6 +15,9 @@ const NoteContainer = styled.div`
   margin-right: 9px;
   background-color: #f0f2f5;
   border-top-left-radius: 10px;
+  align-items: flex-start;
+  height: 100%;
+
 `;
 
 const LoadingContainer = styled.div`
@@ -39,18 +42,22 @@ const StyledInput = styled(Input)`
     border-radius: 10px;
   }
 `;
+
 const Editor = styled.div`
   display: flex;
   flex-flow: wrap;
   padding: 0.5em;
   width: 60vw;
-  height: 70vh;
+
   .note-editor {
     margin-top: 5px;
     border-radius: 10px;
     flex: 1 1 100%;
-    width: calc(60vw - 50px);
-    height: 100%;
+    max-height: 100%;
+
+    .ql-container {
+        height: auto;
+    }
   }
 `;
 

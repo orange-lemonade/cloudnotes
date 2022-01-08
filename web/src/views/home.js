@@ -12,19 +12,16 @@ const AppLayout = styled(Layout)`
     height: 100%;
     
     .app-header {
-        background-color: #0F044C;
+        background-color: #080c11;
         padding: 0 24px;
-        /* border-bottom: 1px solid rgba(255, 255, 255, 0.65); */
     }
-    
 `;
 
 const ContentLayout = styled(Layout)`
     border-top-left-radius: 10px;
-    background-color: #0F044C;
-
-
+    background-color: #080c11;
 `;
+
 const NavBar = styled.div`
     display: flex;
     justify-content: space-between;

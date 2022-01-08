@@ -25,10 +25,6 @@ const ButtonBar = (props) => {
         setIsDeleted,
     } = props;
 
-    function handleRestore(noteId) {
-        setIsDeleted(false);
-        onRestore(noteId);
-    }
     const showSave = noteId < 0 || !isDeleted;
     const showShare = noteId > 0 && !isDeleted;
     const showDelete = noteId > 0 && !isDeleted;
@@ -50,8 +46,7 @@ const ButtonBar = (props) => {
                 </Tooltip>
             )}
 
-            {
-                showShare &&
+            {showShare &&
                 <Tooltip title="Share">
                     <CircleButton
                         type="primary"
@@ -92,7 +87,10 @@ const ButtonBar = (props) => {
                         type="primary"
                         shape="circle"
                         icon={<UndoOutlined />}
-                        onClick={() => handleRestore(noteId)}
+                        onClick={() => {
+                            setIsDeleted(false);
+                            onRestore(noteId);
+                        }}
                     />
                 </Tooltip>
             )}
