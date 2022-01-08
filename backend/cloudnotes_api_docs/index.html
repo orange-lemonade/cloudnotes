@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;1,500&family=Roboto:wght@100;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>CloudNotes API Documentation</title>
+  </head>
+
+  <body>
+    <h1 id="cloudnotes-api-documentation">CloudNotes API Documentation</h1>
+    <h2 id="web-application-https-cloudnotes-link-https-cloudnotes-link-">
+      Web Application :
+      <a href="https://cloudnotes.link/">https://cloudnotes.link/</a>
+    </h2>
+    <h2 id="api-endpoint-https-api-cloudnotes-link-https-api-cloudnotes-link-">
+      API Endpoint :
+      <a href="https://api.cloudnotes.link/">https://api.cloudnotes.link/</a>
+    </h2>
+    <hr />
+    <h2 id="authentication">Authentication</h2>
+    <p>
+      Each endpoint of the Api (with the exception of the
+      <code>/sharedNote</code>) has their <code>JWT</code>&#39;s authenticated
+      and handled by Auth0.
+    </p>
+    <hr />
+    <h2 id="-note-notecontroller-lambda-function-jwt-authorized-">
+      <code>/note</code> - NoteController Lambda Function (JWT Authorized)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getNote</strong></td>
+            <td><code>id</code> (string) = ID of note to be retrieved</td>
+            <td><em>N/A</em></td>
+            <td>
+              Returns the <code>Note</code> that was specified in the
+              <code>id</code> Query Param.
+            </td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><strong>createNote</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code
+                >{ &quot;title&quot;: string, &quot;note_text&quot;: string
+                }</code
+              >
+            </td>
+            <td>
+              Creates a new <code>Note</code> entry with the supplied
+              <code>title</code> and <code>note_text</code> for the currently
+              logged in user. Returns the created <code>Note</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>PATCH</code></td>
+            <td><strong>updateNote</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code
+                >{ &quot;id&quot;: integer, &quot;title&quot;: string,
+                &quot;note_text&quot;: string }</code
+              >
+            </td>
+            <td>
+              Updates the specified <code>Note</code> entry using the
+              <code>id</code> with the supplied <code>title</code> and
+              <code>note_text</code>. Returns the updated <code>Note</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><strong>deleteNote</strong></td>
+            <td>
+              <code>id</code> (string) = ID of note to be marked for deletion
+            </td>
+            <td><em>N/A</em></td>
+            <td>
+              Marks the specified <code>Note</code> entry for deletion using the
+              <code>id</code> Query Param . Returns the newly marked
+              <code>Note</code>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 id="-notes-notescontroller-lambda-function-jwt-authorized-">
+      <code>/notes</code> - NotesController Lambda Function (JWT Authorized)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getNotes</strong></td>
+            <td><em>N/A</em></td>
+            <td><em>N/A</em></td>
+            <td>
+              Returns an <code>array</code> of <code>Note</code>(s) that are
+              <strong>not</strong> marked for deletion for the currently logged
+              in user.
+            </td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><strong>getNotesForTag</strong></td>
+            <td><em>N/A</em></td>
+            <td><code>{ &quot;tag_id&quot;: integer }</code></td>
+            <td>
+              Creates a new <code>Note</code> entry with the supplied
+              <code>title</code> and <code>note_text</code>. Returns the created
+              <code>Note</code>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="-tag-tagcontroller-lambda-function-jwt-authorized-">
+      <code>/tag</code> - TagController Lambda Function (JWT Authorized)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getTags</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code>id</code> (string, optional) Optional param that takes the a
+              <code>Note</code>&#39;s id
+            </td>
+            <td>
+              Returns an <code>array</code> of <code>Tag</code>(s) for the
+              currently logged in user if no <code>id</code> is passed in the
+              query params. Returns <code>Tag</code>s for specified
+              <code>Note</code> if id is passed in query params.
+            </td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><strong>createTag</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code
+                >{ &quot;note_id&quot;: integer, &quot;tag_text&quot;: string
+                }</code
+              >
+            </td>
+            <td>
+              Creates a new <code>Tag</code> entry with the supplied
+              <code>tag_text</code>. Also creates a <code>NoteTag</code> entry
+              linking the <code>Note</code> and <code>Tag</code>. Returns the
+              created <code>Tag</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>PUT</code></td>
+            <td><strong>removeTag</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code
+                >{ &quot;note_id&quot;: integer, &quot;tag_id&quot;: integer
+                }</code
+              >
+            </td>
+            <td>
+              Removes <code>NoteTag</code> link for specified
+              <code>Note</code> and <code>Tag</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>PATCH</code></td>
+            <td><strong>updateTag</strong></td>
+            <td><em>N/A</em></td>
+            <td>
+              <code
+                >{ &quot;id&quot;: integer, &quot;tag_text&quot;: string }</code
+              >
+            </td>
+            <td>
+              Updates the specified <code>Tag</code> entry using the
+              <code>id</code> with the supplied <code>tag_text</code>. Returns
+              the updated <code>Tag</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><strong>deleteTag</strong></td>
+            <td><code>id</code> (string) = ID of tag to be deleted</td>
+            <td><em>N/A</em></td>
+            <td>
+              Deletes specified <code>Tag</code> entry using the
+              <code>id</code>. <code>NoteTag</code> entries are deleted in
+              cascade. Returns success <code>response</code> on deletion.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 id="-bin-trashcontroller-lambda-function-jwt-authorized-">
+      <code>/bin</code> - TrashController Lambda Function (JWT Authorized)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getNotesFromTrash</strong></td>
+            <td><em>N/A</em></td>
+            <td><em>N/A</em></td>
+            <td>
+              Returns an <code>array</code> of <code>Notes</code>(s) that
+              <strong>are</strong> marked for deletion for the currently logged
+              in user.
+            </td>
+          </tr>
+          <tr>
+            <td><code>PATCH</code></td>
+            <td><strong>restoreNoteFromTrash</strong></td>
+            <td><code>id</code> (string) = ID of note to be restored</td>
+            <td><em>N/A</em></td>
+            <td>
+              The <code>Note</code> entry specified by the <code>id</code> Query
+              Param will be restored from the trash bin. Returns the newly
+              restored <code>Note</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><strong>deleteTag</strong></td>
+            <td><code>id</code> (string) = ID of note to be deleted</td>
+            <td><em>N/A</em></td>
+            <td>
+              The <code>Note</code> entry specified by the <code>id</code> Query
+              Param will be deleted <strong>permanently</strong> from the trash
+              bin. <code>NoteTag</code> entries are deleted in cascade. Returns
+              success <code>response</code> on deletion.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 id="-share-sharecontroller-lambda-function-jwt-authorized-">
+      <code>/share</code> - ShareController Lambda Function (JWT Authorized)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getShareLink</strong></td>
+            <td>
+              <code>note_id</code> (string) = ID of note associated with share
+              link
+            </td>
+            <td><em>N/A</em></td>
+            <td>
+              Returns the <code>ShareLink</code> that is associated with the
+              <code>Note</code> specified with the <code>note_id</code> Query
+              Param.
+            </td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><strong>createShareLink</strong></td>
+            <td><em>N/A</em></td>
+            <td><code>{ &quot;note_id&quot;: integer }</code></td>
+            <td>
+              Creates a new <code>ShareLink</code> for the specified
+              <code>Note</code> using the supplied <code>note_id</code>. Returns
+              the created <code>ShareLink</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>PATCH</code></td>
+            <td><strong>updateShareLink</strong></td>
+            <td><code>id</code> (string) = ID of sharelink to be updated</td>
+            <td><em>N/A</em></td>
+            <td>
+              Generates a new share link for the specified
+              <code>ShareLink</code> using the supplied <code>id</code> Query
+              Param. Returns the updated <code>ShareLink</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><strong>updateShareLink</strong></td>
+            <td><code>id</code> (string) = ID of sharelink to be deleted</td>
+            <td><em>N/A</em></td>
+            <td>
+              Deletes specified <code>ShareLink</code> entry using the
+              <code>id</code>. Returns success <code>response</code> on
+              deletion.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 id="-sharednote-sharedlinkcontroller-lambda-function-public-">
+      <code>/sharedNote</code> - SharedLinkController Lambda Function (Public)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Function</th>
+            <th>Required Query Parameters</th>
+            <th>Required Request Body</th>
+            <th>Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><strong>getShareLink</strong></td>
+            <td><code>n</code> (string) = link to publicly shared note</td>
+            <td><em>N/A</em></td>
+            <td>
+              Returns the <code>Note</code> that is associated with the
+              <code>ShareLink</code> specified with the <code>n</code> Query
+              Param.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <h2 id="trashreaper-lambda-function-event-driven-">
+      TrashReaper Lambda Function (Event-Driven)
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Action Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Every <strong>24</strong> hours</td>
+            <td>
+              Deletes an <code>Note</code>(s) that have been marked for deletion
+              for over <code>30</code> days.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <h2 id="models-of-objects-returned-by-api">
+      Models of Objects Returned By Api
+    </h2>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <th>Object</th>
+            <th>Model Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Note</code></td>
+            <td>
+              <code
+                >{ &quot;id&quot; : integer, &quot;user_id&quot; : string,
+                &quot;title&quot; : string, &quot;note_text&quot; : string,
+                &quot;created_on&quot; : timestamp, &quot;updated_on&quot; :
+                timestamp, &quot;deleted&quot;, integer, &quot;deleted_on&quot;
+                : timestamp }</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>Tag</code></td>
+            <td>
+              <code
+                >{ &quot;id&quot; : integer, &quot;user_id&quot; : string,
+                &quot;tag_text&quot; : string }</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>ShareLink</code></td>
+            <td>
+              <code
+                >{ &quot;id&quot; : integer, &quot;note_id&quot; : integer,
+                &quot;share_link&quot; : string }</code
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+  </body>
+</html>

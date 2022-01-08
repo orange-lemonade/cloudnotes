@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { 
-    Button, 
-    Tooltip, 
-    Popconfirm
-} from 'antd';
-import { 
-    SaveOutlined, 
-    DeleteOutlined, 
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Button, Tooltip, Popconfirm } from "antd";
+import {
+    SaveOutlined,
+    DeleteOutlined,
     ShareAltOutlined,
-    UndoOutlined
-} from '@ant-design/icons';
+    UndoOutlined,
+} from "@ant-design/icons";
 import ShareModal from './shareModal';
 
 const CircleButton = styled(Button)`
-    display: block;
-    margin: 1em;
+  display: block;
+  margin: 1em;
 `;
 
 const ButtonBar = (props) => {
-    const { 
-        noteId, 
-        onSave, 
-        onDelete, 
-        isDeleted, 
-        onRestore, 
-        onPermanentDelete 
+    const {
+        noteId,
+        onSave,
+        onDelete,
+        isDeleted,
+        onRestore,
+        onPermanentDelete,
+        setIsDeleted,
     } = props;
 
+    function handleRestore(noteId) {
+        setIsDeleted(false);
+        onRestore(noteId);
+    }
     const showSave = noteId < 0 || !isDeleted;
     const showShare = noteId > 0 && !isDeleted;
     const showDelete = noteId > 0 && !isDeleted;
@@ -38,83 +39,81 @@ const ButtonBar = (props) => {
 
     return (
         <div>
-            {
-                showSave && 
+            {showSave && (
                 <Tooltip title="Save">
-                    <CircleButton 
-                        type="primary" 
-                        shape="circle" 
-                        icon={<SaveOutlined />} 
-                        onClick={onSave}/>
+                    <CircleButton
+                        type="primary"
+                        shape="circle"
+                        icon={<SaveOutlined />}
+                        onClick={onSave}
+                    />
                 </Tooltip>
-            }
+            )}
+
             {
                 showShare &&
                 <Tooltip title="Share">
-                    <CircleButton 
-                        type="primary" 
-                        shape="circle" 
+                    <CircleButton
+                        type="primary"
+                        shape="circle"
                         icon={<ShareAltOutlined />}
                         onClick={() => setShowShareModal(true)}
                     />
                 </Tooltip>
             }
-            {   showShare && 
-                    <ShareModal 
-                        noteId={noteId}
-                        visible={showShareModal} 
-                        onClose={() => setShowShareModal(false)}
-                    /> 
+            {showShare &&
+                <ShareModal
+                    noteId={noteId}
+                    visible={showShareModal}
+                    onClose={() => setShowShareModal(false)}
+                />
             }
-            {
-                showDelete &&
+            {showDelete && (
                 <Tooltip title="Delete">
                     <Popconfirm
-                        title="Are you sure you want to delete this note?"                           
+                        title="Are you sure you want to delete this note?"
                         okText="Yes"
                         cancelText="No"
                         placement="left"
                         onConfirm={() => onDelete(noteId)}
-                    >                            
-                        <CircleButton 
-                            type="primary" 
-                            shape="circle" 
-                            danger={true} 
+                    >
+                        <CircleButton
+                            type="primary"
+                            shape="circle"
+                            danger={true}
                             icon={<DeleteOutlined />}
                         />
                     </Popconfirm>
                 </Tooltip>
-            }
-            {
-                showRestore &&
+            )}
+            {showRestore && (
                 <Tooltip title="Restore Note">
-                    <CircleButton 
-                        type="primary" 
-                        shape="circle" 
+                    <CircleButton
+                        type="primary"
+                        shape="circle"
                         icon={<UndoOutlined />}
-                        onClick={() => onRestore(noteId)}
+                        onClick={() => handleRestore(noteId)}
                     />
                 </Tooltip>
-            }
-            {
-                showDeletePermanent &&
+            )}
+            {showDeletePermanent && (
                 <Tooltip title="Delete Permanently">
                     <Popconfirm
-                        title="Are you sure you want to permanently delete this note?"                           
+                        title="Are you sure you want to permanently delete this note?"
                         okText="Yes"
                         cancelText="No"
                         placement="left"
                         onConfirm={() => onPermanentDelete(noteId)}
-                    >                            
-                        <CircleButton 
-                            type="primary" 
-                            shape="circle" 
-                            danger={true} 
+                    >
+                        <CircleButton
+                            type="primary"
+                            shape="circle"
+                            danger={true}
                             icon={<DeleteOutlined />}
                         />
                     </Popconfirm>
                 </Tooltip>
-            }
+            )}
         </div>
     );
 };
