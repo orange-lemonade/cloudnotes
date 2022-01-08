@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled(Text)`
-    color: rgba(255, 255, 255);
+    color: #b0b0b0;
     margin-left: 0.25em;
     font-size: 1.5em;
 `;

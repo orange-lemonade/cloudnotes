@@ -9,7 +9,8 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { isUndefined } from "lodash";
-import Note from "./note";
+import Note from './note';
+import { showError, SILENT_ERROR, DISPLAY_ERROR } from '../utilities/error';
 
 const { Sider, Content } = Layout;
 
@@ -26,20 +27,20 @@ const StyledSider = styled(Sider)`
   border-top-left-radius: ${(props) => (props.secondary ? "10px" : "0")};
   /* height: 100%; */
   overflow-y: auto;
-  background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
-    background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+    background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
     border-radius: 10px;
-    color: white;
+    color: #b0b0b0;
   }
 
   .ant-menu-dark.ant-menu-inline .ant-menu-item,
   .ant-menu-dark.ant-menu-inline .ant-menu-submenu-title {
-    background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+    background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
     margin-top: 0.5rem;
-    color: white;
+    color: #b0b0b0;
     padding-top: 4px;
     padding-bottom: 4px;
 
@@ -47,10 +48,14 @@ const StyledSider = styled(Sider)`
       background-color: rgba(196, 196, 196, 0.5);
     }
   }
+
+  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: ${(props) => (props.secondary ? "#334258" : "#1f2124")};
+  }
 `;
 
 const StyledMenu = styled(Menu)`
-  background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
   .ant-layout-sider-children {
     background-color: red;
   }
@@ -61,20 +66,16 @@ const StyledContent = styled(Content)`
   border-top-left-radius: ${(props) =>
     props.selectedNote === 0 ? "10px" : "0"};
 
-  background-color: ${(props) => (props.secondary ? "#0F044C" : "#f0f2f5")};
+  background-color: ${(props) => (props.secondary ? "#141e2c" : "#f0f2f5")};
 `;
 
 const StyledMenuItem = styled(Menu.Item)`
   background-color: ${(props) => (props.secondary ? "#787A91" : "#0F044C")};
-`;
 
-const SILENT_ERROR = Symbol("silent");
-const DISPLAY_ERROR = Symbol("display");
-const showError = (errorType, errorMessage) => {
-  if (errorType === DISPLAY_ERROR)
-    message.error("There was an error processing your request");
-  console.error(errorMessage);
-};
+  svg {
+    color: #45a0b7;
+  }
+`;
 
 const Notebook = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -341,7 +342,7 @@ const Notebook = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
+          }
         });
         if (response.status === 200) {
           const responseData = await response.json();
