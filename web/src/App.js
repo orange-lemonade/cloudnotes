@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
-import Home from './views/Home';
+import Home from './views/home';
+import SharedNote from "./views/sharedNote";
 import styled from 'styled-components';
 import 'antd/dist/antd.css';
 
@@ -18,6 +19,7 @@ function App() {
     <MainContainer>
       <Routes>
         <Route path='/' element={<Home />} exact />
+        <Route path='/note' element={<SharedNote />} exact />
       </Routes>
     </MainContainer>
   );

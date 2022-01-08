@@ -1,9 +1,9 @@
 import React from "react";
 import { Layout, Button, Tooltip } from 'antd';
 import styled from 'styled-components';
-import Logo from '../../components/logo';
+import Logo from '../components/logo';
 import { LogoutOutlined } from '@ant-design/icons';
-import Notebook from '../../components/notebook';
+import Notebook from '../components/notebook';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const { Header } = Layout;
@@ -49,7 +49,6 @@ function Home() {
                         </Tooltip>
                     }
                 </NavBar>
-
             </Header>
             <Layout>
                 {

@@ -16,6 +16,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
 import { isUndefined } from "lodash";
 import Note from './note';
+import { showError, SILENT_ERROR, DISPLAY_ERROR } from '../utilities/error';
 
 const { Sider, Content } = Layout;
 
@@ -31,14 +32,6 @@ const MenuDivider = styled(Divider)`
 const ScrollableSider = styled(Sider)`
     overflow: auto;
 `;
-
-const SILENT_ERROR = Symbol("silent");
-const DISPLAY_ERROR = Symbol("display");
-const showError = (errorType, errorMessage) => {
-    if (errorType === DISPLAY_ERROR)
-        message.error('There was an error processing your request');
-    console.error(errorMessage);
-};
 
 const Notebook = () => {
     const { getAccessTokenSilently } = useAuth0();  
