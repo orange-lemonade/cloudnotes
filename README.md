@@ -25,6 +25,8 @@ The frontend will be built using the Javascript framework, ReactJS. For the appl
 
 # Amendments to Application
 
-We made a few changes to the MySQL database schema due to Auth0 handling all of the user authentication and providing each user with it's own unique `sub` id that is authorized and validated every time an endpoint is called. Instead of having an individual user table we use this `sub` id as the main `user_id` variable in the `Note` and `Tag` tables. We also make use of the PyMySql python library to help handle executing SQL queries.
+In terms of the backend architecture, the only changed we made that is different than the proposal is the addition of the AWS CloudFront (CDN) Service. It will ensure the content for the website is delivered quickly to our consumers and certain static elements are cached closed to their locations once the first request has been made.
+
+There is also a change to the MySQL database schema due to Auth0 handling all of the user authentication and providing each user with it's own unique `sub` id (which is also authorized and validated every time an endpoint is called for security purposes). Instead of having an individual user table we use this `sub` id as the main `user_id` variable in the `Note` and `Tag` tables. We also make use of the PyMySql python library to help handle executing SQL queries.
 
 Other than those changes the application works well and meets the goals we set in the beginning of this coursework project. Login and test it out [here](https://www.cloudnotes.link/).
