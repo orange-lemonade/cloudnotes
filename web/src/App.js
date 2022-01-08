@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import 'antd/dist/antd.css';
 
 const MainContainer = styled.main`
-    background-color: #0f044c;
+    //background-color: #0f044c;
     position: absolute;
     top: 0;
     bottom: 0;
