@@ -7,7 +7,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { isUndefined } from "lodash";
 import Note from './note';
 import { showError, SILENT_ERROR, DISPLAY_ERROR } from '../utilities/error';
@@ -48,6 +48,10 @@ const StyledSider = styled(Sider)`
       background-color: rgba(196, 196, 196, 0.5);
     }
   }
+
+  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: ${(props) => (props.secondary ? "#334258" : "#1f2124")};
+  }
 `;
 
 const StyledMenu = styled(Menu)`
@@ -71,16 +75,6 @@ const StyledMenuItem = styled(Menu.Item)`
   svg {
     color: #45a0b7;
   }
-
-  ${(props) => {
-      if (props.secondary) {
-        return css`        
-            .ant-menu-title-content {
-                color: #f8b536;
-            }
-        `
-      }
-  }}
 `;
 
 const Notebook = () => {
