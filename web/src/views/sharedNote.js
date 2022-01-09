@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import { showError, SILENT_ERROR } from "../utilities/error";
 import styled from "styled-components";
 
@@ -21,13 +20,10 @@ const SharedNote = (props) => {
   const [noteText, setNoteText] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const id = searchParams.get("id");
-  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const getTags = async () => {
       try {
-        // const token = await getAccessTokenSilently();
-
         const response = await fetch(
           `https://api.cloudnotes.link/sharedNote?n=${id}`,
           {
@@ -52,7 +48,6 @@ const SharedNote = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(id);
   return (
     <NoteContainer>
       <h1 className="note-title">{noteTitle}</h1>
