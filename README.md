@@ -6,6 +6,8 @@
 
 ### Backend Documentation Link: [https://docs.cloudnotes.link/](https://docs.cloudnotes.link/)
 
+### Project Demo Link: [https://clipchamp.com/watch/TJBVqcPZEYF](https://clipchamp.com/watch/TJBVqcPZEYF)
+
 # Requirements of Application
 
 Our proposed cloud application to meet the coursework requirement for this module is a cloud-based note-taking application built by implementing AWS technology. This web application will allow users to log in and save notes that users have taken using a rich-text editor. The notes will automatically save to the cloud, so users don’t have to worry about saving their work. Users will be able to add multiple tags to their notes to organise their work. If a user deletes their note, they will be able to retrieve it from their trash; else, the note will be permanently deleted after 30 days. Users will also be able to generate a shareable link (which they can enable & disable) that they can use to share a note they take with others.
