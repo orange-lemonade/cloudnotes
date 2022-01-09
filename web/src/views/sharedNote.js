@@ -26,16 +26,12 @@ const SharedNote = (props) => {
   useEffect(() => {
     const getTags = async () => {
       try {
-        const token = await getAccessTokenSilently();
+        // const token = await getAccessTokenSilently();
 
         const response = await fetch(
           `https://api.cloudnotes.link/sharedNote?n=${id}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
           }
         );
         if (response.status === 200) {
