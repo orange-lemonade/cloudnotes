@@ -9,8 +9,8 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { isUndefined } from "lodash";
-import Note from './note';
-import { showError, SILENT_ERROR, DISPLAY_ERROR } from '../utilities/error';
+import Note from "./note";
+import { showError, SILENT_ERROR, DISPLAY_ERROR } from "../utilities/error";
 
 const { Sider, Content } = Layout;
 
@@ -25,7 +25,6 @@ const MenuDivider = styled(Divider)`
 
 const StyledSider = styled(Sider)`
   border-top-left-radius: ${(props) => (props.secondary ? "10px" : "0")};
-  /* height: 100%; */
   overflow-y: auto;
   background-color: ${(props) => (props.secondary ? "#141e2c" : "#080c11")};
   .ant-menu.ant-menu-dark,
@@ -49,7 +48,8 @@ const StyledSider = styled(Sider)`
     }
   }
 
-  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal)
+    .ant-menu-item-selected {
     background-color: ${(props) => (props.secondary ? "#334258" : "#1f2124")};
   }
 `;
@@ -135,6 +135,7 @@ const Notebook = () => {
 
       if (response.status === 200) {
         message.success("Your changes have been saved");
+        refreshNotes("all", id.toString());
       } else showError(response.statusText, DISPLAY_ERROR);
     } catch (error) {
       showError(error, DISPLAY_ERROR);
@@ -189,7 +190,6 @@ const Notebook = () => {
   };
 
   const onSave = async (id, title, text) => {
-    console.log(id, title, text);
     id <= 0 ? saveNewNote(title, text) : editNote(id, title, text);
   };
 
@@ -281,12 +281,34 @@ const Notebook = () => {
 
       if (response.status === 200) {
         const responseData = await response.json();
-
         setState({
           ...state,
           notes: responseData,
           selectedTag: tagId,
           selectedNote: preselectedNote || -1,
+        });
+      } else showError(response.statusText, SILENT_ERROR);
+    } catch (error) {
+      showError(error, SILENT_ERROR);
+    }
+  };
+
+  const refreshNotes = async (tagId, preselectedNote) => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`https://api.cloudnotes.link/notes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const responseData = await response.json();
+        setState({
+          ...state,
+          notes: responseData,
         });
       } else showError(response.statusText, SILENT_ERROR);
     } catch (error) {
@@ -341,7 +363,7 @@ const Notebook = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
         });
         if (response.status === 200) {
           const responseData = await response.json();
@@ -359,7 +381,7 @@ const Notebook = () => {
     getTags();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(state.selectedNote);
   return (
     <>
       <StyledSider>

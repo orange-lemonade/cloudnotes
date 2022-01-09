@@ -17,7 +17,6 @@ const NoteContainer = styled.div`
   border-top-left-radius: 10px;
   align-items: flex-start;
   height: 100%;
-
 `;
 
 const LoadingContainer = styled.div`
@@ -53,10 +52,10 @@ const Editor = styled.div`
     margin-top: 5px;
     border-radius: 10px;
     flex: 1 1 100%;
-    max-height: 100%;
+    height: 100%;
 
     .ql-container {
-        height: auto;
+      height: 70vh;
     }
   }
 `;
@@ -130,7 +129,6 @@ const Note = (props) => {
               bordered={false}
               onChange={(e) => {
                 setTitle(e.target.value);
-                setNoteText(reactQuillRef.getEditor().getText());
               }}
             />
 
@@ -151,9 +149,10 @@ const Note = (props) => {
           <ButtonBar
             noteId={noteId}
             isDeleted={isDeleted === 1}
-            onSave={() =>
-              onSave(noteId, title, reactQuillRef.getEditorContents())
-            }
+            onSave={() => {
+              onSave(noteId, title, reactQuillRef.getEditorContents());
+              setNoteText(reactQuillRef.getEditorContents());
+            }}
             onDelete={onDelete}
             onRestore={onRestore}
             onPermanentDelete={onPermanentDelete}
