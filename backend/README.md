@@ -1,6 +1,6 @@
 # CloudNotes API Documentation
 
-## Web Application : [https://cloudnotes.link/](https://www.cloudnotes.link/)
+## Web Application : [https://www.cloudnotes.link/](https://www.cloudnotes.link/)
 
 ## API Endpoint : [https://api.cloudnotes.link/](https://api.cloudnotes.link/)
 
