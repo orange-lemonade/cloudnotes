@@ -1,7 +1,5 @@
 # CloudNotes
 
-## Project By Damian Barrous-Dume and Carla Diaz Espinoza
-
 ### Application Link: [https://www.cloudnotes.link/](https://www.cloudnotes.link/)
 
 ### Backend Documentation Link: [https://docs.cloudnotes.link/](https://docs.cloudnotes.link/)
